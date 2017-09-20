@@ -5,7 +5,7 @@
 
 	<groupId>nl.knmi.adaguc.config</groupId>
 	<artifactId>adaguc-services-config</artifactId>
-	<version>1.0.0</version>
+	<version>1.0.1</version>
 	<packaging>jar</packaging>
 
 	<name>adaguc-services-config</name>
