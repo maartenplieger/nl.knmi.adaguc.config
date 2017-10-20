@@ -7,12 +7,17 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.reflections.Reflections;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RestController;
 
 import nl.knmi.adaguc.tools.Debug;
 import nl.knmi.adaguc.tools.ElementNotFoundException;
 import nl.knmi.adaguc.tools.MyXMLParser.XMLElement;
 import nl.knmi.adaguc.tools.Tools;
-
+import org.springframework.context.annotation.Bean;
 
 /**
  * @author maartenplieger
@@ -22,17 +27,28 @@ import nl.knmi.adaguc.tools.Tools;
  *
  */
 public class ConfigurationReader {
-	public static long readConfigPolInterval = 0;
-	public static long readConfigPolIntervalDuration = 10000;
-	public static String configFileLocationByEnvironment = "ADAGUC_SERVICES_CONFIG";
-	public static String configFileNameInHomeByDefault = "adaguc-services-config.xml";
+	public long readConfigPolInterval = 0;
+	private final long readConfigPolIntervalDuration = 10000;
+	public String configFileLocationByEnvironment = "ADAGUC_SERVICES_CONFIG";
+	public String configFileNameInHomeByDefault = "adaguc-services-config.xml";
 
-
-	private static String _getHomePath(){
+//
+//	@Value("${value.from.file}")
+//	private String stringValue;
+//	
+//	public void afterPropertiesSet() throws Exception { 
+//		Debug.println(stringValue);
+//		readConfig();
+//	}
+	
+	public ConfigurationReader(){
+	}
+	
+	private String _getHomePath(){
 		return System.getProperty("user.home")+"/";
 	}
 
-	private static String _getConfigFile(){
+	private String _getConfigFile(){
 		try{
 			String configLocation = System.getenv(configFileLocationByEnvironment);
 			if(configLocation!=null){
@@ -45,6 +61,10 @@ public class ConfigurationReader {
 		return _getHomePath()+configFileNameInHomeByDefault;
 	}
 
+	public synchronized void reset() {
+		readConfigPolInterval = 0;
+	}
+
 	/**
 	 * 1) Reads the configuration file periodically, re-reads the configuration file every readConfigPolIntervalDuration ms
 	 * 2) When read, the doConfig method for all classes which implement ConfiguratorInterface is called
@@ -52,11 +72,12 @@ public class ConfigurationReader {
 	 * @throws ElementNotFoundException 
 	 * @throws Exception 
 	 */
-	public static synchronized void readConfig() throws  ElementNotFoundException{
+	public synchronized void readConfig() throws  ElementNotFoundException{
 		/* Re-read the configuration file every 10 seconds. */
 		if(readConfigPolInterval != 0){
 			if(System.currentTimeMillis()<readConfigPolInterval+readConfigPolIntervalDuration )return;
 		}
+
 		readConfigPolInterval=System.currentTimeMillis(); 
 		Debug.println("Reading configfile "+_getConfigFile());
 		XMLElement configReader = new XMLElement();
@@ -104,19 +125,20 @@ public class ConfigurationReader {
 				e1.printStackTrace();
 			}
 		///}
-		Reflections reflections = new Reflections("nl.knmi.adaguc");
+		Reflections reflections = new Reflections("nl.knmi");
 		
 
         
 		Set<Class<? extends ConfiguratorInterface>> allClasses = 
 				reflections.getSubTypesOf(ConfiguratorInterface.class);
-
+		
 		Iterator<Class<? extends ConfiguratorInterface>> it = allClasses.iterator();
 		while(it.hasNext()){
 			Class<? extends ConfiguratorInterface> a = it.next();
 			try {
 				Debug.println("==> Calling get " + a.getName());
 				a.newInstance().doConfig(configReader);
+//				a.newInstance().setConfigDone();;
 			} catch (InstantiationException | IllegalAccessException e) {
 				e.printStackTrace();
 			}

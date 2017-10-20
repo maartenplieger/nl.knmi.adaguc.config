@@ -9,10 +9,31 @@ import nl.knmi.adaguc.tools.MyXMLParser.XMLElement;
  *
  */
 public interface ConfiguratorInterface {
+//	static class ConfiguratorHelper {
+//		static boolean configDone = false;
+//	
+//		public void setConfigDone() {
+//			configDone = true;
+//		}
+//		
+//		public static boolean getConfigDone() {
+//			return configDone;
+//		}
+//	}
+//	
+//	ConfiguratorHelper configurationHelper = null;
+	
+//	public void createConfigurationHelper ();
+		
 	/**
 	 * This method is called when the configuration is read.
 	 * @param configReader The configuration file object
 	 * @throws Exception 
 	 */
 	public void doConfig(XMLElement configReader) throws ElementNotFoundException;
+	
+	
+//	public void setConfigDone ();
+
 }
+
