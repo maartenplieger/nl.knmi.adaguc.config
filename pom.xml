@@ -5,7 +5,7 @@
 
 	<groupId>nl.knmi.adaguc.config</groupId>
 	<artifactId>adaguc-services-config</artifactId>
-	<version>1.0.8</version>
+	<version>1.0.9</version>
 	<packaging>jar</packaging>
 
 	<name>adaguc-services-config</name>
@@ -68,10 +68,14 @@
 			<scope>provided</scope>
 		</dependency>
 
+
+
+	
+
 		<dependency>
 			<groupId>com.github.maartenplieger</groupId>
 			<artifactId>nl.knmi.adaguc.tools</artifactId>
-			<version>1.0.0</version>
+			<version>1.0.6</version>
 		</dependency>
 
 
