@@ -136,7 +136,7 @@ public class ConfigurationReader {
 		while(it.hasNext()){
 			Class<? extends ConfiguratorInterface> a = it.next();
 			try {
-				Debug.println("==> Calling get " + a.getName());
+//				 Debug.println("==> Calling get " + a.getName());
 				a.newInstance().doConfig(configReader);
 //				a.newInstance().setConfigDone();;
 			} catch (InstantiationException | IllegalAccessException e) {
