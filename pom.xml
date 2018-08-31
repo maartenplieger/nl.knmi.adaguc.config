@@ -73,10 +73,8 @@
 	
 
 		<dependency>
-			<!-- <groupId>com.github.maartenplieger</groupId>
-			<artifactId>nl.knmi.adaguc.tools</artifactId>-->
-				<groupId>nl.knmi.adaguc.tools</groupId>
- 	<artifactId>adaguc-services-tools</artifactId>
+			<groupId>com.github.maartenplieger</groupId>
+			<artifactId>nl.knmi.adaguc.tools</artifactId>
 			<version>1.0.10</version>
 		</dependency>
 
